@@ -63,7 +63,9 @@ public class HomeController {
     public String search(SearchFormData searchFormData, Model model) {
         String messages = "Hallo, Welcome to Spring MVC";
         model.addAttribute("msg", messages);
+        // Dibawah ini untuk menerima inputan dari searc form di index.html
         model.addAttribute("searchForm", searchFormData);
+        // Dibawah ini untuk meng override object yang sudah diterapin sebelumnya di index.html
         model.addAttribute("products", productService.findByName(searchFormData.getKeyword()));
         return "index";
     }

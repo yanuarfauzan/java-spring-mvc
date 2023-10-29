@@ -18,12 +18,17 @@ public class ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private EmailService emailServ;
+
     // method findAll() nge return iterable jadi harus Iterable tipe data nya
     public Iterable<Product> findAll() {
         return productRepo.findAll();
     }
 
     public void addProduct(Product product) {
+        emailServ.sendEmail("fauzan@gmail.com", "New Product Added",
+                "Hi, a new product is created " + product.getCode() + " " + product.getName());
         productRepo.save(product);
     }
 
