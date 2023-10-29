@@ -1,17 +1,28 @@
 package com.springmvc.demomvc.entity;
 
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tbl_product")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length =10, nullable =false, unique = true)
     private String code;
+
+    @Column(length = 150, nullable = false)
     private String name;
+
     private double price;
 
-    public Product(Long id, String code, String name, double price) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.price = price;
-    }
 
     public Product() {
 
