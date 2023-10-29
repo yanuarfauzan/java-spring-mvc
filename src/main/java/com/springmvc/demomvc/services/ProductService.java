@@ -1,48 +1,48 @@
 package com.springmvc.demomvc.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springmvc.demomvc.entity.Product;
-import com.springmvc.demomvc.utils.RandomNumber;
+import com.springmvc.demomvc.repo.ProductRepo;
+
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class ProductService {
-    private static List<Product> products = new ArrayList<Product>() {
-        {
-            add(new Product(RandomNumber.getRandom(1000, 9999), "001", "Product 001", 1000.0));
-            add(new Product(RandomNumber.getRandom(1000, 9999), "002", "Product 002", 2000.0));
-            add(new Product(RandomNumber.getRandom(1000, 9999), "003", "Product 003", 3000.0));
-            add(new Product(RandomNumber.getRandom(1000, 9999), "004", "Product 004", 4000.0));
-            add(new Product(RandomNumber.getRandom(1000, 9999), "005", "Product 005", 5000.0));
-            add(new Product(RandomNumber.getRandom(1000, 9999), "006", "Product 005", 5000.0));
-        }
-    };
 
-    public List<Product> findAll() {
-        return products;
+    @Autowired
+    private ProductRepo productRepo;
+
+    // method findAll() nge return iterable jadi harus Iterable tipe data nya
+    public Iterable<Product> findAll() {
+        return productRepo.findAll();
     }
 
     public void addProduct(Product product) {
-        product.setId(RandomNumber.getRandom(1000, 9999));
-        products.add(product);
+        productRepo.save(product);
     }
 
     public void deleteById(long id) {
-        products.removeIf(p -> p.getId() == id);
+        productRepo.deleteById(id);
     }
 
     // mengambil data satu row
     public Optional<Product> findById(long id) {
-        return products.stream().filter(p -> p.getId() == id).findFirst();
+        return productRepo.findById(id);
     }
 
-    public void updateProduct(Product product){
-        deleteById(product.getId());
-        products.add(product);
+    public void updateProduct(Product product) {
+        productRepo.save(product);
+    }
+
+    public List<Product> findByName(String keyword) {
+        return productRepo.findByNameContains(keyword);
+
     }
 
 }

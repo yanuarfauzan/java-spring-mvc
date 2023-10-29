@@ -6,9 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.springmvc.demomvc.dto.SearchFormData;
 import com.springmvc.demomvc.entity.Product;
 import com.springmvc.demomvc.services.ProductService;
 
@@ -20,10 +20,11 @@ public class HomeController {
     @Autowired
     public ProductService productService;
 
-    @GetMapping
+    @GetMapping()
     public String sayHello(Model model) {
         String messages = "Hallo, Welcome to Spring MVC";
         model.addAttribute("msg", messages);
+        model.addAttribute("searchForm", new SearchFormData());
         model.addAttribute("products", productService.findAll());
         return "index";
     }
@@ -56,5 +57,14 @@ public class HomeController {
     public String update(Product product, Model model) {
         productService.updateProduct(product);
         return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String search(SearchFormData searchFormData, Model model) {
+        String messages = "Hallo, Welcome to Spring MVC";
+        model.addAttribute("msg", messages);
+        model.addAttribute("searchForm", searchFormData);
+        model.addAttribute("products", productService.findByName(searchFormData.getKeyword()));
+        return "index";
     }
 }
